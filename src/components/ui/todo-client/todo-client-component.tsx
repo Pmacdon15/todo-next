@@ -102,7 +102,16 @@ function Todos({ sectionName, todos, isPending, isErrorLoading, toggleTodo, dele
                         <span
                             className={`text-sm flex justify-end ${todo.duedate && new Date(todo.duedate).getTime() < new Date().setHours(0, 0, 0, 0) ? 'text-red-600' : ''}`}
                         >
-                            Due: {new Date(todo.duedate).toString()}
+                            Due: {
+                                new Intl.DateTimeFormat(undefined, {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric',
+                                    hour: 'numeric',
+                                    minute: 'numeric',
+                                    second: 'numeric',
+                                }).format(new Date(todo.duedate))
+                            }
                         </span>
                         <div className="flex justify-end">
                             <Button onClick={() => deleteTodo(todo.id)}>Delete</Button>

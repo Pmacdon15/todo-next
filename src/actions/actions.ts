@@ -43,7 +43,7 @@ export async function addTodo(dueDate: Date, formData: FormData) {
         await sql(`
             INSERT INTO NTODOS (todoName, todoDescription, dueDate, complete)
             VALUES ($1, $2, $3, $4);
-          `, [todoName, todoDescription, dueDateWithTimezone, false]);
+        `, [todoName, todoDescription, dueDateWithTimezone, false]);
     } catch (e) {
         console.error("Error adding todo: ", e);
     }
