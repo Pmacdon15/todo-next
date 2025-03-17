@@ -52,14 +52,14 @@ interface NewTodoFormProps {
 
 function NewTodoForm({ dueDate, setDueDate, addTodoAction }: NewTodoFormProps) {
     return (
-        <div className="border rounded-md w-3/6 mt-4 p-8 shadow-md">
+        <div className="border rounded-md w-5/6 md:w-3/6 mt-4 p-8 shadow-md">
             <h1 className="text-2xl mx-auto">Add a Todo</h1>
             <form
                 action={(formData: FormData) => {
                     addTodoAction({ dueDate, formData });
                 }}
             >
-                <div className="flex p-4 gap-4">
+                <div className="flex flex-col md:flex-row p-4 gap-4">
                     <Input required name="todo-name" className="w-2/6 h-10 p-2" placeholder="Name of todo" />
                     <Textarea required name="todo-description" className="w-3/6 p-2" placeholder="Description" />
                     <DatePicker callback={setDueDate} />
@@ -85,21 +85,23 @@ function Todos({ sectionName, todos, isPending, isErrorLoading, toggleTodo, dele
     if (isPending) return <div className="border rounded-md w-3/6 mt-4 p-8 shadow-md"><h1>Loading.....</h1></div>
     if (isErrorLoading) return <div className="border rounded-md w-3/6 mt-4 p-8 shadow-md"><h1>Error Loading</h1></div>
     return (
-        <div className="border rounded-md w-3/6 mt-4 p-8 shadow-md">
+        <div className="border rounded-md w-5/6 md:w-3/6 mt-4 p-8 shadow-md">
             <h1 className="text-2xl mx-auto">{sectionName} Todos</h1>
             <ul className="ml-4">
                 {todos?.map((todo) => (
                     <li
-                        className='flex gap-2 items-center border-b pb-2 mb-2'
+                        className='flex flex-col md:flex-row gap-2 items-center border-b pb-2 md:mt-4 mb-2'
                         key={todo.id}>
                         <Checkbox
                             defaultChecked={todo.complete}
                             onClick={() => toggleTodo(todo.id)}
                         />
+                        {/* if complete cross out */}
                         <p className={`text-xl w-full ${todo.complete ? 'line-through' : ''}`}>
                             {todo.todoname} - {todo.tododescription}
                         </p>
                         <span
+                            // if past due make red
                             className={`text-sm flex justify-end ${todo.duedate && new Date(todo.duedate).getTime() < new Date().setHours(0, 0, 0, 0) ? 'text-red-600' : ''}`}
                         >
                             Due: {
