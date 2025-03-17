@@ -107,9 +107,6 @@ function Todos({ sectionName, todos, isPending, isErrorLoading, toggleTodo, dele
                                     year: 'numeric',
                                     month: 'short',
                                     day: 'numeric',
-                                    hour: 'numeric',
-                                    minute: 'numeric',
-                                    second: 'numeric',
                                 }).format(new Date(todo.duedate))
                             }
                         </span>
