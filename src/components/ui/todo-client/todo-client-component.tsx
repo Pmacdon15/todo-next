@@ -20,6 +20,7 @@ export default function TodoClientComponent() {
     const { mutate: mutateToggleComplete } = useToggleTodo();
     const { mutate: mutateDeleteTodo } = useDeleteTodo();
 
+    console.log(data);
     return (
         <>
             <NewTodoForm dueDate={dueDate} setDueDate={setDueDate} addTodoAction={mutateAddTodo} />
@@ -96,8 +97,9 @@ function Todos({ sectionName, todos, isPending, isErrorLoading, toggleTodo, dele
                             onClick={() => toggleTodo(todo.id)}
                         />
                         <p className={`text-xl w-full ${todo.complete ? 'line-through' : ''}`}>
-                            {todo.todoname} - {todo.tododescription} <span className='text-sm flex justify-end"'>Due: {new Date(todo.duedate).toLocaleDateString()}</span>
+                            {todo.todoname} - {todo.tododescription}
                         </p>
+                        <span className={`text-sm flex justify-end ${todo.duedate && new Date(todo.duedate).getTime() < new Date().setHours(0, 0, 0, 0) ? 'text-red-600' : ''}`}>Due: {new Date(todo.duedate).toDateString()}</span>
                         <div className="flex justify-end">
                             <Button onClick={() => deleteTodo(todo.id)}>Delete</Button>
                         </div>
