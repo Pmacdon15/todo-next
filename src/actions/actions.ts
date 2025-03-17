@@ -9,4 +9,13 @@ export async function toggleComplete(id: number) {
         Where id=${id}
         `);
     console.log(result)
-} 
+}
+
+export async function addTodo(dueDate: Date, formData: FormData) {
+    const todoName = formData.get('todo-name')?.toString() || '';
+    const todoDescription = formData.get('todo-description')?.toString() || '';
+    // const dueDate = formData.get('due-date')?.toString() || '';
+    console.log(todoName);
+    console.log(todoDescription);
+    console.log(dueDate);
+}
