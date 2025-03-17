@@ -13,7 +13,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-full w-full justify-center items-center">
-      <h1 className="text-4xl mt-4 font-bold ">Todo's</h1>
+      <h1 className="text-4xl mt-4 font-bold ">Todo&apos;s</h1>
       <Todos todos={notCompleteTodos} isPending={isPending} toggleTodo={mutate} />
       <Todos todos={completeTodos} isPending={isPending} toggleTodo={mutate} />
     </div>
