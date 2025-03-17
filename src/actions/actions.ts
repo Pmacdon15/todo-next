@@ -2,20 +2,30 @@
 import { neon } from '@neondatabase/serverless';
 
 export async function toggleComplete(id: number) {
-    const sql = neon(`${process.env.DATABASE_URL}`);
-    const result = await sql(`
-        Update NTODOS
-        set complete = Not complete 
-        Where id=${id}
-        `);
-    console.log(result)
+    try {
+        const sql = neon(`${process.env.DATABASE_URL}`);
+        await sql(`
+            Update NTODOS
+            set complete = Not complete 
+            Where id=${id}
+        `);      
+    } catch (e) {
+        console.error("Error toggling complete: ", e)
+    }
 }
+
 
 export async function addTodo(dueDate: Date, formData: FormData) {
     const todoName = formData.get('todo-name')?.toString() || '';
     const todoDescription = formData.get('todo-description')?.toString() || '';
-    // const dueDate = formData.get('due-date')?.toString() || '';
-    console.log(todoName);
-    console.log(todoDescription);
-    console.log(dueDate);
+
+    try {
+        const sql = neon(`${process.env.DATABASE_URL}`);
+        await sql(`
+            INSERT INTO NTODOS (todoName, todoDescription, dueDate, complete)
+            VALUES ($1, $2, $3, $4);
+          `, [todoName, todoDescription, dueDate, false]);
+    } catch (e) {
+        console.error("Error adding todo: ", e);
+    }
 }
