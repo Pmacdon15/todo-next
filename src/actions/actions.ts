@@ -8,7 +8,7 @@ export async function toggleComplete(id: number) {
             Update NTODOS
             set complete = Not complete 
             Where id=${id}
-        `);      
+        `);
     } catch (e) {
         console.error("Error toggling complete: ", e)
     }
@@ -27,5 +27,17 @@ export async function addTodo(dueDate: Date, formData: FormData) {
           `, [todoName, todoDescription, dueDate, false]);
     } catch (e) {
         console.error("Error adding todo: ", e);
+    }
+}
+
+export async function deleteTodo(id: number) {
+    try {
+        const sql = neon(`${process.env.DATABASE_URL}`);
+        await sql(`
+            delete from NTODOS
+            where id = $1;
+        `, [id]);
+    }catch(e){
+        console.error("Error deleting todo: ", e);
     }
 }

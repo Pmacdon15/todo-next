@@ -1,7 +1,7 @@
 'use client'
 import { useGetTodos } from '@/hooks/hooks'
 import { Todo } from '@/types/types'
-import { useToggleTodo, useAddTodo } from '@/hooks/mutations/mutations';
+import { useToggleTodo, useAddTodo, useDeleteTodo } from '@/hooks/mutations/mutations';
 import { DatePicker } from '@/components/ui/data-picker/date-picker';
 import { Button } from "@/components/ui/button"
 import { useState } from 'react';
@@ -18,14 +18,29 @@ export default function Page() {
 
     const { mutate: mutateAddTodo } = useAddTodo();
     const { mutate: mutateToggleComplete } = useToggleTodo();
+    const { mutate: mutateDeleteTodo } = useDeleteTodo();
 
     console.log(data)
     return (
         <div className="flex flex-col min-h-full w-full justify-center items-center">
             <h1 className="text-4xl mt-4 font-bold ">Pat&apos;s Todo&apos;s</h1>
             <NewTodoForm dueDate={dueDate} setDueDate={setDueDate} addTodoAction={mutateAddTodo} />
-            <Todos sectionName="Current" todos={notCompleteTodos} isPending={isPending} toggleTodo={mutateToggleComplete} isErrorLoading={isErrorLoading} />
-            <Todos sectionName="Complete" todos={completeTodos} isPending={isPending} toggleTodo={mutateToggleComplete} isErrorLoading={isErrorLoading} />
+            <Todos
+                sectionName="Current"
+                todos={notCompleteTodos}
+                isPending={isPending}
+                toggleTodo={mutateToggleComplete}
+                isErrorLoading={isErrorLoading}
+                deleteTodo={mutateDeleteTodo}
+            />
+            <Todos
+                sectionName="Complete"
+                todos={completeTodos}
+                isPending={isPending}
+                toggleTodo={mutateToggleComplete}
+                isErrorLoading={isErrorLoading}
+                deleteTodo={mutateDeleteTodo}
+            />
         </div>
     );
 }
@@ -64,9 +79,10 @@ interface TodosProps {
     isPending: boolean;
     isErrorLoading?: boolean;
     toggleTodo: (id: number) => void;
+    deleteTodo: (id: number) => void;
 }
 
-function Todos({ sectionName, todos, isPending, isErrorLoading, toggleTodo }: TodosProps) {
+function Todos({ sectionName, todos, isPending, isErrorLoading, toggleTodo, deleteTodo }: TodosProps) {
     if (isPending) return <div className="border rounded-md w-3/6 mt-4 p-8 shadow-md"><h1>Loading.....</h1></div>
     if (isErrorLoading) return <div className="border rounded-md w-3/6 mt-4 p-8 shadow-md"><h1>Error Loading</h1></div>
     return (
@@ -85,7 +101,7 @@ function Todos({ sectionName, todos, isPending, isErrorLoading, toggleTodo }: To
                             {todo.todoname} - {todo.tododescription} <span className='text-sm flex justify-end"'>Due: {new Date(todo.duedate).toLocaleDateString()}</span>
                         </p>
                         <div className="flex justify-end">
-                            <Button>Delete</Button>
+                            <Button onClick={() => deleteTodo(todo.id)}>Delete</Button>
                         </div>
                     </li>
                 ))}
