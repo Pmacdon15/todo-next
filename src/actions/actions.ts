@@ -1,7 +1,16 @@
 'use server'
 import { neon } from '@neondatabase/serverless';
+import { auth } from "@/auth";
+import { redirect } from 'next/navigation';
+
+async function isSession() {
+    const session = await auth();
+    // console.log(session)
+    if (!session) redirect('/')
+}
 
 export async function toggleComplete(id: number) {
+    await isSession();
     try {
         const sql = neon(`${process.env.DATABASE_URL}`);
         await sql(`
@@ -15,6 +24,7 @@ export async function toggleComplete(id: number) {
 }
 
 export async function addTodo(dueDate: Date, formData: FormData) {
+    await isSession();
     const todoName = formData.get('todo-name')?.toString() || '';
     const todoDescription = formData.get('todo-description')?.toString() || '';
 
@@ -34,13 +44,16 @@ export async function addTodo(dueDate: Date, formData: FormData) {
 }
 
 export async function deleteTodo(id: number) {
+    await isSession();
     try {
         const sql = neon(`${process.env.DATABASE_URL}`);
         await sql(`
             delete from NTODOS
             where id = $1;
         `, [id]);
-    }catch(e){
+    } catch (e) {
         console.error("Error deleting todo: ", e);
     }
 }
+
+
