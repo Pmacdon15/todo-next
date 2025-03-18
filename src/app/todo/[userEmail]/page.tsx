@@ -15,10 +15,11 @@ export default async function Page({
 
   return (
     <div className="flex flex-col min-h-full w-full justify-center items-center ">
-      <div className='flex w-full justify-between'>
-        <div className='flex justify-center'></div>
-        <Header  />
-        <AuthButtons session={session} />
+      <div className='flex w-full justify-center relative'>
+        <Header />
+        <div className='absolute right-0'>
+          <AuthButtons session={session} />
+        </div>
       </div>
       <TodoClientComponent />
     </div>
