@@ -3,7 +3,6 @@ import AuthButtons from '@/components/ui/auth-buttons/auth-buttons';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 export default async function Page() {
-  
   const session = await auth();
   if(session)redirect(`/todo/${session.user?.email}`);
 
