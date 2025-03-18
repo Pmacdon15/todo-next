@@ -12,9 +12,9 @@ interface Props {
 export default function AuthButtons({ session }: Props) {
     return (
         <>
-            <div className='flex p-4 gap-4'>
+            <div className='flex flex-wrap p-4 gap-4'>
                 {!session ? (
-                    <>
+                    <div className='flex flex-col md:flex-row gap-4 p-4'>
                         <Button onClick={() => loginGithub()}>
                             <FontAwesomeIcon icon={faGithub} className="mr-2" />
                             Sign In With GitHub
@@ -25,9 +25,9 @@ export default function AuthButtons({ session }: Props) {
                         </Button>
                         <Button onClick={() => loginDiscord()}>
                             <FontAwesomeIcon icon={faDiscord} className="mr-2" />
-                            Sign In With GitLab
+                            Sign In With Discord
                         </Button>
-                    </>
+                    </div>
                 ) : (
                     <Button onClick={() => logout()}>Sign Out</Button>
                 )}
