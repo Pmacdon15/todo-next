@@ -19,10 +19,9 @@ export default function TodoClientComponent() {
     const { mutate: mutateAddTodo } = useAddTodo();
     const { mutate: mutateToggleComplete } = useToggleTodo();
     const { mutate: mutateDeleteTodo } = useDeleteTodo();
-
-    console.log(data);
+  
     return (
-        <>
+        <div className='flex flex-col min-h-full w-full justify-center items-center mb-8'>
             <NewTodoForm dueDate={dueDate} setDueDate={setDueDate} addTodoAction={mutateAddTodo} />
             <Todos
                 sectionName="Current"
@@ -40,7 +39,7 @@ export default function TodoClientComponent() {
                 isErrorLoading={isErrorLoading}
                 deleteTodo={mutateDeleteTodo}
             />
-        </>
+        </div>
     );
 }
 
