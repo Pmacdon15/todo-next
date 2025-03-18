@@ -14,22 +14,6 @@ export async function toggleComplete(id: number) {
     }
 }
 
-
-// export async function addTodo(dueDate: Date, formData: FormData) {
-//     const todoName = formData.get('todo-name')?.toString() || '';
-//     const todoDescription = formData.get('todo-description')?.toString() || '';
-
-//     try {
-//         const sql = neon(`${process.env.DATABASE_URL}`);
-//         await sql(`
-//             INSERT INTO NTODOS (todoName, todoDescription, dueDate, complete)
-//             VALUES ($1, $2, $3, $4);
-//           `, [todoName, todoDescription, dueDate, false]);
-//     } catch (e) {
-//         console.error("Error adding todo: ", e);
-//     }
-// }
-
 export async function addTodo(dueDate: Date, formData: FormData) {
     const todoName = formData.get('todo-name')?.toString() || '';
     const todoDescription = formData.get('todo-description')?.toString() || '';
