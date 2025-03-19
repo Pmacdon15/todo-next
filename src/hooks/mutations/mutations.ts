@@ -6,7 +6,7 @@ export const useToggleTodo = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: number) => toggleComplete(id),
+    mutationFn: ({ id, userEmail }: { id: number; userEmail: string }) => toggleComplete(id, userEmail),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['todos'] })
     }

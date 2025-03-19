@@ -9,9 +9,9 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 
-export default function TodoClientComponent() {
+export default function TodoClientComponent({ userEmail }: { userEmail: string }) {
 
-    const { data, isPending, isError: isErrorLoading } = useGetTodos();
+    const { data, isPending, isError: isErrorLoading } = useGetTodos(userEmail);
     const notCompleteTodos = data?.filter((todo) => { if (!todo.complete) return true; });
     const completeTodos = data?.filter((todo) => { if (todo.complete) return true })
     const [dueDate, setDueDate] = useState<Date>(new Date(Date.now() + 24 * 60 * 60 * 1000));
@@ -19,12 +19,13 @@ export default function TodoClientComponent() {
     const { mutate: mutateAddTodo } = useAddTodo();
     const { mutate: mutateToggleComplete } = useToggleTodo();
     const { mutate: mutateDeleteTodo } = useDeleteTodo();
-  
+
     return (
         <div className='flex flex-col min-h-full w-full justify-center items-center mb-8'>
             <NewTodoForm dueDate={dueDate} setDueDate={setDueDate} addTodoAction={mutateAddTodo} />
             <Todos
                 sectionName="Current"
+                userEmail={userEmail}
                 todos={notCompleteTodos}
                 isPending={isPending}
                 toggleTodo={mutateToggleComplete}
@@ -33,6 +34,7 @@ export default function TodoClientComponent() {
             />
             <Todos
                 sectionName="Complete"
+                userEmail={userEmail}
                 todos={completeTodos}
                 isPending={isPending}
                 toggleTodo={mutateToggleComplete}
@@ -73,14 +75,15 @@ function NewTodoForm({ dueDate, setDueDate, addTodoAction }: NewTodoFormProps) {
 
 interface TodosProps {
     sectionName: string;
+    userEmail: string;
     todos: Todo[] | undefined;
     isPending: boolean;
     isErrorLoading?: boolean;
-    toggleTodo: (id: number) => void;
+    toggleTodo: ({ id, userEmail }: { id: number, userEmail: string }) => void;
     deleteTodo: (id: number) => void;
 }
 
-function Todos({ sectionName, todos, isPending, isErrorLoading, toggleTodo, deleteTodo }: TodosProps) {
+function Todos({ sectionName, userEmail, todos, isPending, isErrorLoading, toggleTodo, deleteTodo }: TodosProps) {
     if (isPending) return <div className="border rounded-md w-3/6 mt-4 p-8 shadow-md"><h1>Loading.....</h1></div>
     if (isErrorLoading) return <div className="border rounded-md w-3/6 mt-4 p-8 shadow-md"><h1>Error Loading</h1></div>
     return (
@@ -93,7 +96,7 @@ function Todos({ sectionName, todos, isPending, isErrorLoading, toggleTodo, dele
                         key={todo.id}>
                         <Checkbox
                             defaultChecked={todo.complete}
-                            onClick={() => toggleTodo(todo.id)}
+                            onClick={() => toggleTodo({ id: todo.id, userEmail })}
                         />
                         {/* if complete cross out */}
                         <p className={`text-xl w-full ${todo.complete ? 'line-through' : ''}`}>
