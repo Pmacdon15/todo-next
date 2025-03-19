@@ -10,8 +10,8 @@ Create table NTODOS (
 )
 
 
-SELECT * FROM NTODOS WHERE userEmail = 'pmacdonald15@gmail.com' ORDER BY dueDate 
--- INSERT INTO NTODOS (todoName, todoDescription, dueDate, complete)
--- VALUES ('Walk the dog', 'You will take the dog out and walk it', CURRENT_DATE, false),
--- ('Take out trash', 'You will take out the trash', CURRENT_DATE, true);
+
+-- INSERT INTO NTODOS (todoName, todoDescription, dueDate, complete, userEmail)
+-- VALUES ('Walk the dog', 'You will take the dog out and walk it', CURRENT_DATE, false, "pm@gmail.com");
+
 

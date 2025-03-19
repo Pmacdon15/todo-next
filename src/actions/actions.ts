@@ -16,8 +16,8 @@ export async function toggleComplete(id: number, userEmail: string) {
     }
 }
 
-export async function addTodo(dueDate: Date, formData: FormData) {
-    // await isSession(userEmail);
+export async function addTodo(userEmail: string, dueDate: Date, formData: FormData) {
+    await isSession(userEmail);
     const todoName = formData.get('todo-name')?.toString() || '';
     const todoDescription = formData.get('todo-description')?.toString() || '';
 
@@ -30,14 +30,14 @@ export async function addTodo(dueDate: Date, formData: FormData) {
         await sql(`
             INSERT INTO NTODOS (todoName, todoDescription, dueDate, complete, userEmail)
             VALUES ($1, $2, $3, $4, $5);
-        `, [todoName, todoDescription, dueDateWithTimezone, false, "pmacdonald15@gmail.com"]);
+        `, [todoName, todoDescription, dueDateWithTimezone, false, userEmail]);
     } catch (e) {
         console.error("Error adding todo: ", e);
     }
 }
 
-export async function deleteTodo(id: number) {
-    // await isSession(userEmail);
+export async function deleteTodo(id: number, userEmail: string) {
+    await isSession(userEmail);
     try {
         const sql = neon(`${process.env.DATABASE_URL}`);
         await sql(`
