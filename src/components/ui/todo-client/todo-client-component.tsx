@@ -19,7 +19,7 @@ export default function TodoClientComponent({ userEmail }: { userEmail: string }
     const { mutate: mutateAddTodo } = useAddTodo(userEmail);
     const { mutate: mutateToggleComplete } = useToggleTodo(userEmail);
     const { mutate: mutateDeleteTodo } = useDeleteTodo(userEmail);
-console.log(data)
+    
     return (
         <div className='flex flex-col min-h-full w-full justify-center items-center mb-8'>
             <NewTodoForm userEmail={userEmail} dueDate={dueDate} setDueDate={setDueDate} addTodoAction={mutateAddTodo} />
