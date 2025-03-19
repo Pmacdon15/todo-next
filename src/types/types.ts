@@ -4,5 +4,6 @@ export type Todo = {
     tododescription: string;
     duedate: Date;
     complete: boolean;
+    userEmail:string;
 }
 

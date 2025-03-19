@@ -2,6 +2,7 @@ import TodoClientComponent from '@/components/ui/todo-client/todo-client-compone
 import Header from '@/components/ui/header/header'
 import AuthButtons from '@/components/ui/auth-buttons/auth-buttons';
 import { auth } from '@/auth';
+import { checkIsAuthorized } from '@/actions/auth';
 
 export default async function Page({
   params,
@@ -11,7 +12,8 @@ export default async function Page({
   const session = await auth();
   const { userEmail } = await params;
   const uriDecodedUserEmail = decodeURIComponent(userEmail);
-  if (userEmail) console.log(uriDecodedUserEmail);
+
+  await checkIsAuthorized(session?.user?.email, uriDecodedUserEmail);
 
   return (
     <div className="flex flex-col min-h-full w-full justify-center items-center ">
@@ -21,7 +23,7 @@ export default async function Page({
           <AuthButtons session={session} />
         </div>
       </div>
-      <TodoClientComponent />
+      <TodoClientComponent userEmail={uriDecodedUserEmail} />
     </div>
   );
 }

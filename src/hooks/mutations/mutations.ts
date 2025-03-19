@@ -2,38 +2,39 @@ import { useMutation } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
 import { toggleComplete, addTodo, deleteTodo } from '@/actions/actions'
 
-export const useToggleTodo = () => {
+export const useToggleTodo = (userEmail: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: number) => toggleComplete(id),
+    mutationFn: ({ id, userEmail }: { id: number; userEmail: string }) => toggleComplete(id, userEmail),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['todos'] })
+      queryClient.invalidateQueries({ queryKey: ['todos', userEmail] })
     }
   })
 }
 
-export const useAddTodo = () => {
+export const useAddTodo = (userEmail: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ dueDate, formData }: { dueDate: Date; formData: FormData }) => {
-      const bindActionWithDueDate = addTodo.bind(null, dueDate);
+    mutationFn: ({ userEmail, dueDate, formData }: { userEmail: string, dueDate: Date; formData: FormData }) => {
+      const bindWithUserEmail = addTodo.bind(null, userEmail);
+      const bindActionWithDueDate = bindWithUserEmail.bind(null, dueDate);    
       return bindActionWithDueDate(formData);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['todos'] });
+      queryClient.invalidateQueries({ queryKey: ['todos', userEmail] });
     },
   });
 };
 
-export const useDeleteTodo = () => {
+export const useDeleteTodo = (userEmail: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: number) => deleteTodo(id),
+    mutationFn: ({ id, userEmail }: { id: number; userEmail: string }) => deleteTodo(id, userEmail),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['todos'] })
+      queryClient.invalidateQueries({ queryKey: ['todos', userEmail] })
     }
   })
 }

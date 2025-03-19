@@ -9,22 +9,23 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 
-export default function TodoClientComponent() {
+export default function TodoClientComponent({ userEmail }: { userEmail: string }) {
 
-    const { data, isPending, isError: isErrorLoading } = useGetTodos();
+    const { data, isPending, isError: isErrorLoading } = useGetTodos(userEmail);
     const notCompleteTodos = data?.filter((todo) => { if (!todo.complete) return true; });
     const completeTodos = data?.filter((todo) => { if (todo.complete) return true })
     const [dueDate, setDueDate] = useState<Date>(new Date(Date.now() + 24 * 60 * 60 * 1000));
 
-    const { mutate: mutateAddTodo } = useAddTodo();
-    const { mutate: mutateToggleComplete } = useToggleTodo();
-    const { mutate: mutateDeleteTodo } = useDeleteTodo();
-  
+    const { mutate: mutateAddTodo } = useAddTodo(userEmail);
+    const { mutate: mutateToggleComplete } = useToggleTodo(userEmail);
+    const { mutate: mutateDeleteTodo } = useDeleteTodo(userEmail);
+    
     return (
         <div className='flex flex-col min-h-full w-full justify-center items-center mb-8'>
-            <NewTodoForm dueDate={dueDate} setDueDate={setDueDate} addTodoAction={mutateAddTodo} />
+            <NewTodoForm userEmail={userEmail} dueDate={dueDate} setDueDate={setDueDate} addTodoAction={mutateAddTodo} />
             <Todos
                 sectionName="Current"
+                userEmail={userEmail}
                 todos={notCompleteTodos}
                 isPending={isPending}
                 toggleTodo={mutateToggleComplete}
@@ -33,6 +34,7 @@ export default function TodoClientComponent() {
             />
             <Todos
                 sectionName="Complete"
+                userEmail={userEmail}
                 todos={completeTodos}
                 isPending={isPending}
                 toggleTodo={mutateToggleComplete}
@@ -44,18 +46,19 @@ export default function TodoClientComponent() {
 }
 
 interface NewTodoFormProps {
+    userEmail: string;
     dueDate: Date;
     setDueDate: (date: Date) => void;
-    addTodoAction: ({ dueDate, formData }: { dueDate: Date; formData: FormData }) => void;
+    addTodoAction: ({ userEmail, dueDate, formData }: { userEmail: string, dueDate: Date; formData: FormData }) => void;
 }
 
-function NewTodoForm({ dueDate, setDueDate, addTodoAction }: NewTodoFormProps) {
+function NewTodoForm({ userEmail, dueDate, setDueDate, addTodoAction }: NewTodoFormProps) {
     return (
         <div className="border rounded-md w-5/6 md:w-3/6 mt-4 p-8 shadow-md">
             <h1 className="text-2xl mx-auto">Add a Todo</h1>
             <form
                 action={(formData: FormData) => {
-                    addTodoAction({ dueDate, formData });
+                    addTodoAction({userEmail, dueDate, formData });
                 }}
             >
                 <div className="flex flex-col md:flex-row p-4 gap-4">
@@ -73,14 +76,15 @@ function NewTodoForm({ dueDate, setDueDate, addTodoAction }: NewTodoFormProps) {
 
 interface TodosProps {
     sectionName: string;
+    userEmail: string;
     todos: Todo[] | undefined;
     isPending: boolean;
     isErrorLoading?: boolean;
-    toggleTodo: (id: number) => void;
-    deleteTodo: (id: number) => void;
+    toggleTodo: ({ id, userEmail }: { id: number, userEmail: string }) => void;
+    deleteTodo: ({ id, userEmail }: { id: number, userEmail: string }) => void;
 }
 
-function Todos({ sectionName, todos, isPending, isErrorLoading, toggleTodo, deleteTodo }: TodosProps) {
+function Todos({ sectionName, userEmail, todos, isPending, isErrorLoading, toggleTodo, deleteTodo }: TodosProps) {
     if (isPending) return <div className="border rounded-md w-3/6 mt-4 p-8 shadow-md"><h1>Loading.....</h1></div>
     if (isErrorLoading) return <div className="border rounded-md w-3/6 mt-4 p-8 shadow-md"><h1>Error Loading</h1></div>
     return (
@@ -93,7 +97,7 @@ function Todos({ sectionName, todos, isPending, isErrorLoading, toggleTodo, dele
                         key={todo.id}>
                         <Checkbox
                             defaultChecked={todo.complete}
-                            onClick={() => toggleTodo(todo.id)}
+                            onClick={() => toggleTodo({ id: todo.id, userEmail })}
                         />
                         {/* if complete cross out */}
                         <p className={`text-xl w-full ${todo.complete ? 'line-through' : ''}`}>
@@ -112,7 +116,7 @@ function Todos({ sectionName, todos, isPending, isErrorLoading, toggleTodo, dele
                             }
                         </span>
                         <div className="flex justify-end">
-                            <Button onClick={() => deleteTodo(todo.id)}>Delete</Button>
+                            <Button onClick={() => deleteTodo({ id: todo.id, userEmail })}>Delete</Button>
                         </div>
                     </li>
                 ))}
