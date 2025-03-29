@@ -30,7 +30,7 @@ A full-stack Todo application built with modern web technologies.
 1. Clone the repository
 2. Install dependencies:
 ```bash
-npm install
+npm install --force
 ```
 
 3. Set up environment variables:
