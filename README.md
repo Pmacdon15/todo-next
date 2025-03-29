@@ -1,36 +1,104 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pat's Todo Application
+
+A full-stack Todo application built with modern web technologies.
+
+## Features
+
+- User authentication via GitHub, GitLab, and Discord
+- Create, read, update, and delete todos
+- Due date tracking with visual indicators for overdue items
+- Responsive design for mobile and desktop
+- Real-time updates using TanStack Query
+
+## Tech Stack
+
+- **Frontend:**
+  - Next.js 15
+  - React 19
+  - TanStack Query for data fetching
+  - Shadcn UI components
+  - Tailwind CSS for styling
+  - TypeScript for type safety
+
+- **Backend:**
+  - Next.js API routes
+  - NextAuth.js for authentication
+  - Neon PostgreSQL for database
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository
+2. Install dependencies:
+```bash
+npm install
+```
 
+3. Set up environment variables:
+```env
+DATABASE_URL=your_neon_database_url
+GITHUB_ID=your_github_oauth_id
+GITHUB_SECRET=your_github_oauth_secret
+GITLAB_ID=your_gitlab_oauth_id
+GITLAB_SECRET=your_gitlab_oauth_secret
+DISCORD_ID=your_discord_oauth_id
+DISCORD_SECRET=your_discord_oauth_secret
+```
+
+4. Run the development server:
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Database Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The application uses a PostgreSQL database. Initialize it using the schema in [schema/create-schema-template.sql](schema/create-schema-template.sql).
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+- `src/actions/` - Server actions for database operations
+- `src/app/` - Next.js app router pages and layouts
+- `src/components/` - React components including UI components
+- `src/hooks/` - Custom React hooks for data fetching
+- `src/types/` - TypeScript type definitions
+- `src/lib/` - Utility functions
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Authentication
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The app supports login via:
+- GitHub
+- GitLab
+- Discord
 
-## Deploy on Vercel
+Users must be authenticated to access the todo functionality.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Development
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+To start developing:
+
+1. Run the development server with Turbopack:
+```bash
+npm run dev
+```
+
+2. Run linting:
+```bash
+npm run lint
+```
+
+3. Build for production:
+```bash
+npm run build
+```
+
+## Deployment
+
+This application can be deployed on Vercel:
+
+1. Push your code to GitHub
+2. Import your repository on Vercel
+3. Configure environment variables
+4. Deploy
+
+For more details, see the [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying).
