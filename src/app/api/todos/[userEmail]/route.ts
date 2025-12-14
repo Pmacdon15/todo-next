@@ -12,12 +12,16 @@ export async function GET(request: NextRequest) {
 
 	try {
 		const sql = neon(`${process.env.DATABASE_URL}`)
-		const result =
-			await sql`SELECT * FROM NTODOS WHERE userEmail = '${uriDecodedUserEmail}' ORDER BY duedate  `
+		const result = await sql`
+			SELECT * FROM NTODOS 
+			WHERE userEmail = ${uriDecodedUserEmail} 
+			ORDER BY duedate
+		`
 		return new Response(JSON.stringify(result as Todo[]), {
 			headers: { 'Content-Type': 'application/json' },
 		})
 	} catch (error) {
+        console.error(error)
 		return new Response(`Error getting comments: ${error}`, {
 			headers: { 'Content-Type': 'text/plain' },
 		})
