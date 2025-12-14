@@ -1,9 +1,8 @@
 export type Todo = {
-    id: number;
-    todoname: string;
-    tododescription: string;
-    duedate: Date;
-    complete: boolean;
-    userEmail:string;
+	id: number
+	todoname: string
+	tododescription: string
+	duedate: Date
+	complete: boolean
+	userEmail: string
 }
-

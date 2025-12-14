@@ -1,5 +1,3 @@
 export default function Header() {
-    return (
-        <h1 className="text-4xl mt-4 font-bold">Pat&apos;s Todo&apos;s</h1>
-    );
-};
+	return <h1 className="mt-4 font-bold text-4xl">Pat&apos;s Todo&apos;s</h1>
+}
