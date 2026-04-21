@@ -1,12 +1,8 @@
 'use client'
 import type { Session } from '@auth/core/types'
-import {
-	faDiscord,
-	faGithub,
-	faGitlab,
-} from '@fortawesome/free-brands-svg-icons'
+import { faDiscord } from '@fortawesome/free-brands-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { loginDiscord, loginGithub, loginGitlab, logout } from '@/actions/auth'
+import { loginDiscord, logout } from '@/actions/auth'
 import { Button } from '@/components/ui/button'
 
 interface Props {
@@ -18,14 +14,14 @@ export default function AuthButtons({ session }: Props) {
 		<div className="flex flex-wrap gap-4 p-4">
 			{!session ? (
 				<div className="flex flex-col gap-4 p-4 md:flex-row">
-					<Button onClick={() => loginGithub()}>
+					{/* <Button onClick={() => loginGithub()}>
 						<FontAwesomeIcon className="mr-2" icon={faGithub} />
 						Sign In With GitHub
 					</Button>
 					<Button onClick={() => loginGitlab()}>
 						<FontAwesomeIcon className="mr-2" icon={faGitlab} />
 						Sign In With GitLab
-					</Button>
+					</Button> */}
 					<Button onClick={() => loginDiscord()}>
 						<FontAwesomeIcon className="mr-2" icon={faDiscord} />
 						Sign In With Discord
